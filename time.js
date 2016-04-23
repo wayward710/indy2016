@@ -25,6 +25,10 @@ $(function() {
     var labels_enabled = false;
     var grid_enabled = false;
 
+    var nasa_layer_name = "MODIS_Terra_CorrectedReflectance_TrueColor";
+    var nasa_layer_format = "image/jpeg";
+    var nasa_layer_matrix_set = "EPSG4326_250m";
+
     // Seven day slider based off today, remember what today is
     var today = new Date();
 
@@ -35,6 +39,9 @@ $(function() {
     // loaded tiles to be used when revisiting a day. Since this is a
     // simple example, layers never "expire" from the cache.
     var cache = {};
+    var cache_grid = {};
+    var cache_coastlines = {};
+    var cache_labels = {};
 
     // GIBS needs the day as a string parameter in the form of YYYY-MM-DD.
     // Date.toISOString returns YYYY-MM-DDTHH:MM:SSZ. Split at the "T" and
@@ -139,8 +146,24 @@ $(function() {
         // TODO look into caching grid, coastlines, and labels
         // Using the day as the cache key, see if the layer is already
         // in the cache.
+        console.log("grid: " + grid_enabled);
         var key = dayParameter();
         var layer = cache[key];
+
+        // today -- use as key for grid/coastline/label layers
+        var ref_layer_key = new Date(today.getTime());
+
+        var coast_layer = cache_coastlines[ref_layer_key];
+        if (!coast_layer) {
+            coast_layer = coastlineLayer();
+            cache_coastlines[ref_layer_key] = coast_layer;
+        }
+
+        var lbl_layer = cache_labels[ref_layer_key];
+        if (!lbl_layer) {
+            lbl_layer = labelLayer();
+            cache_labels[ref_layer_key] = lbl_layer;
+        }
 
         // If not, create a new layer and add it to the cache.
         if ( !layer ) {
@@ -155,11 +178,15 @@ $(function() {
         // Add the new layer for the selected time
         map.addLayer(layer);
 
-        coastLayer = coastlineLayer();
-        lblLayer = labelLayer();
-        map.addLayer(coastLayer);
-        map.addLayer(lblLayer);
-        map.addLayer(gridLayer);
+        if (coastline_enabled) {
+            map.addLayer(coast_layer);
+        }
+        if (labels_enabled) {
+            map.addLayer(lbl_layer);
+        }
+        if (grid_enabled) {
+            map.addLayer(gridLayer);
+        }
 
         // Update the day label
         $("#day-label").html(dayParameter());
@@ -170,20 +197,18 @@ $(function() {
         // layer.
         var activeLayers = map.getLayers().getArray();
         for ( var i = 0; i < activeLayers.length; i++ ) {
+            console.log('removing layer');
             map.removeLayer(activeLayers[i]);
         }
     };
 
-
+    // TODO refactor to accept layer, matrixSet, and format parameters?
     var createLayer = function() {
         var source = new ol.source.WMTS({
             url: "//map1{a-c}.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi?TIME=" + dayParameter(),
-            layer: "MODIS_Terra_CorrectedReflectance_TrueColor",
-            //layer: "Coastlines",
-            format: "image/jpeg",
-            //format: "image/png",
-            matrixSet: "EPSG4326_250m",
-            //matrixSet: "EPSG4326_2km",
+            layer: nasa_layer_name,
+            format: nasa_layer_format,
+            matrixSet: nasa_layer_matrix_set,
             tileGrid: new ol.tilegrid.WMTS({
                 origin: [-180, 90],
                 resolutions: [
@@ -223,4 +248,57 @@ $(function() {
             update();
         }
     });
+
+    var toggleGrid = function() {
+        grid_enabled = !grid_enabled;
+        update();
+    };
+
+    var toggleCoastline = function() {
+        coastline_enabled = !coastline_enabled;
+        update();
+    };
+
+    var toggleLabels = function() {
+        labels_enabled = !labels_enabled;
+        alert("did something!");
+        update();
+    };
+
+    var grid_checkbox = $("#gridcheck");
+
+    grid_checkbox.change(function(event) {
+        var grid_checkbox = event.target;
+        if (grid_checkbox.checked) {
+            grid_enabled = true;
+        } else {
+            grid_enabled = false;
+        }
+        update();
+    });
+
+    var coast_checkbox = $("#coastcheck");
+
+    coast_checkbox.change(function(event) {
+        var coast_checkbox = event.target;
+        if (coast_checkbox.checked) {
+            coastline_enabled = true;
+        } else {
+            coastline_enabled = false;
+        }
+        update();
+    });
+
+    var label_checkbox = $("#labelcheck");
+
+    label_checkbox.change(function(event) {
+        var label_checkbox = event.target;
+        if (label_checkbox.checked) {
+            labels_enabled = true;
+        } else {
+            labels_enabled = false;
+        }
+        update();
+    });
+
 });
