@@ -20,6 +20,11 @@
 
 $(function() {
 
+    // Keep track of whether user wants to see these
+    var coastline_enabled = false;
+    var labels_enabled = false;
+    var grid_enabled = false;
+
     // Seven day slider based off today, remember what today is
     var today = new Date();
 
@@ -51,7 +56,87 @@ $(function() {
         renderer: ["canvas", "dom"],
     });
 
+    var coastlineLayer = function() {
+        var source = new ol.source.WMTS({
+            url: "//map1{a-c}.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi?TIME=" + dayParameter(),
+            layer: "Coastlines",
+            format: "image/png",
+            matrixSet: "EPSG4326_250m",
+            tileGrid: new ol.tilegrid.WMTS({
+                origin: [-180, 90],
+                resolutions: [
+                    0.5625,
+                    0.28125,
+                    0.140625,
+                    0.0703125,
+                    0.03515625,
+                    0.017578125,
+                    0.0087890625,
+                    0.00439453125,
+                    0.002197265625
+                ],
+                matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                tileSize: 512
+            })
+        });
+
+        var layer = new ol.layer.Tile({source: source});
+        return layer;
+    };
+
+    var labelLayer = function() {
+        var source = new ol.source.WMTS({
+            url: "//map1{a-c}.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi?TIME=" + dayParameter(),
+            layer: "Reference_Labels",
+            format: "image/png",
+            matrixSet: "EPSG4326_250m",
+            tileGrid: new ol.tilegrid.WMTS({
+                origin: [-180, 90],
+                resolutions: [
+                    0.5625,
+                    0.28125,
+                    0.140625,
+                    0.0703125,
+                    0.03515625,
+                    0.017578125,
+                    0.0087890625,
+                    0.00439453125,
+                    0.002197265625
+                ],
+                matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                tileSize: 512
+            })
+        });
+
+        var layer = new ol.layer.Tile({source: source});
+        return layer;
+    };
+
+
+    var gridLayer=new ol.layer.Vector({
+
+        source: new ol.source.Vector({
+
+            url: 'MODIS_Grid.EPSG_4326.json',
+            format: new ol.format.GeoJSON({
+
+                defaultDataProjection :'EPSG:4326',
+                projection: 'EPSG:4326'
+
+            })
+
+        }),
+        name: 'Grids',
+        style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: "rgba(186, 180, 152, 0.6)",
+                width: 1.5
+            })
+        })
+    });
+
     var update = function() {
+        // TODO look into caching grid, coastlines, and labels
         // Using the day as the cache key, see if the layer is already
         // in the cache.
         var key = dayParameter();
@@ -70,6 +155,12 @@ $(function() {
         // Add the new layer for the selected time
         map.addLayer(layer);
 
+        coastLayer = coastlineLayer();
+        lblLayer = labelLayer();
+        map.addLayer(coastLayer);
+        map.addLayer(lblLayer);
+        map.addLayer(gridLayer);
+
         // Update the day label
         $("#day-label").html(dayParameter());
     };
@@ -83,12 +174,16 @@ $(function() {
         }
     };
 
+
     var createLayer = function() {
         var source = new ol.source.WMTS({
             url: "//map1{a-c}.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi?TIME=" + dayParameter(),
             layer: "MODIS_Terra_CorrectedReflectance_TrueColor",
+            //layer: "Coastlines",
             format: "image/jpeg",
+            //format: "image/png",
             matrixSet: "EPSG4326_250m",
+            //matrixSet: "EPSG4326_2km",
             tileGrid: new ol.tilegrid.WMTS({
                 origin: [-180, 90],
                 resolutions: [

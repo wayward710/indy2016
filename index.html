@@ -60,7 +60,7 @@
         <div id="day-slider"></div>
     </div>
 
-    <div class="panel-group" id="accordion" style="position:absolute;top:10px;left:200px;padding:5px 3px;">
+    <div class="panel-group" id="accordion" style="position:absolute;top:10px;left:175px;padding:5px 3px;">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
@@ -70,10 +70,28 @@
             </div>
             <div id="collapse1" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <p>Base Layer Source</p>
-                    <p>Timeline limits</p>
-                    <p>Display Base Map</p>
-                    <p>Grids if possible?</p>
+
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="sel1">Base layer source</label>
+                            <select class="form-control" id="sel1">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox"> Show coastlines</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox"> Show labels</label>
+                        </div>
+
+                        <div class="checkbox">
+                            <label><input type="checkbox"> Show grid</label>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
