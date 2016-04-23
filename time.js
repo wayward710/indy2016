@@ -29,6 +29,14 @@ $(function() {
     var nasa_layer_format = "image/jpeg";
     var nasa_layer_matrix_set = "EPSG4326_250m";
 
+    var fmt_hash = new Object();
+    fmt_hash['MODIS_Terra_CorrectedReflectance_TrueColor'] = "image/jpeg";
+    fmt_hash['AIRS_CO_Total_Column_Day'] = "image/png";
+
+    var matrix_hash = new Object();
+    matrix_hash['MODIS_Terra_CorrectedReflectance_TrueColor'] = "EPSG4326_250m";
+    matrix_hash['AIRS_CO_Total_Column_Day'] = "EPSG4326_2km";
+
     // Seven day slider based off today, remember what today is
     var today = new Date();
 
@@ -143,14 +151,15 @@ $(function() {
     });
 
     var update = function() {
-        // TODO look into caching grid, coastlines, and labels
-        // Using the day as the cache key, see if the layer is already
+
+        // Using day as the cache key, see if the layer is already
         // in the cache.
-        console.log("grid: " + grid_enabled);
+
         var key = dayParameter();
         var layer = cache[key];
 
         // today -- use as key for grid/coastline/label layers
+        // since those values shouldn't change
         var ref_layer_key = new Date(today.getTime());
 
         var coast_layer = cache_coastlines[ref_layer_key];
@@ -197,8 +206,10 @@ $(function() {
         // layer.
         var activeLayers = map.getLayers().getArray();
         for ( var i = 0; i < activeLayers.length; i++ ) {
-            console.log('removing layer');
-            map.removeLayer(activeLayers[i]);
+            // Need to check to see whether layer actually exists
+            if (activeLayers[i]) {
+                map.removeLayer(activeLayers[i]);
+            }
         }
     };
 
@@ -249,22 +260,6 @@ $(function() {
         }
     });
 
-    var toggleGrid = function() {
-        grid_enabled = !grid_enabled;
-        update();
-    };
-
-    var toggleCoastline = function() {
-        coastline_enabled = !coastline_enabled;
-        update();
-    };
-
-    var toggleLabels = function() {
-        labels_enabled = !labels_enabled;
-        alert("did something!");
-        update();
-    };
-
     var grid_checkbox = $("#gridcheck");
 
     grid_checkbox.change(function(event) {
@@ -298,6 +293,16 @@ $(function() {
         } else {
             labels_enabled = false;
         }
+        update();
+    });
+
+    var layer_dropdown = $("#baselayer");
+    layer_dropdown.change(function(event) {
+        nasa_layer_name = this.value;
+        nasa_layer_format = fmt_hash[nasa_layer_name];
+        nasa_layer_matrix_set = matrix_hash[nasa_layer_name];
+        // Better blow away cache
+        cache = {};
         update();
     });
 
