@@ -38,10 +38,63 @@ $(function() {
     var fmt_hash = new Object();
     fmt_hash['MODIS_Terra_CorrectedReflectance_TrueColor'] = "image/jpeg";
     fmt_hash['AIRS_CO_Total_Column_Day'] = "image/png";
+    fmt_hash['AIRS_CO_Total_Column_Night'] = "image/png";
+    fmt_hash['AIRS_Dust_Score_Ocean_Day'] = "image/png";
+    fmt_hash['AIRS_Dust_Score_Ocean_Night'] = "image/png";
+    fmt_hash['AIRS_Prata_SO2_Index_Day'] = "image/png";
+    fmt_hash['AIRS_Prata_SO2_Index_Night'] = "image/png";
+    fmt_hash['AIRS_Precipitation_Day'] = "image/png";
+    fmt_hash['AIRS_Precipitation_Night'] = "image/png";
+    fmt_hash['MODIS_Aqua_Aerosol'] = "image/png";
+    fmt_hash['MODIS_Aqua_Brightness_Temp_Band31_Day'] = "image/png";
+    fmt_hash['MODIS_Aqua_Brightness_Temp_Band31_Night'] = "image/png";
+    fmt_hash['MODIS_Aqua_Chlorophyll_A'] = "image/png";
+    fmt_hash['MODIS_Aqua_CorrectedReflectance_TrueColor'] = "image/jpeg";
+    fmt_hash['MODIS_Aqua_Land_Surface_Temp_Day'] = "image/png";
+    fmt_hash['MODIS_Aqua_Land_Surface_Temp_Night'] = "image/png";
+    fmt_hash['MODIS_Aqua_Sea_Ice'] = "image/png";
+    fmt_hash['MODIS_Aqua_SurfaceReflectance_Bands121'] = "image/jpeg";
+    fmt_hash['MODIS_Terra_Water_Vapor_5km_Day'] = "image/png";
+    fmt_hash['MODIS_Terra_Water_Vapor_5km_Night'] = "image/png";
+    fmt_hash['MODIS_Water_Mask'] = "image/png";
+    fmt_hash['OMI_SO2_Lower_Troposphere'] = "image/png";
+    fmt_hash['OMI_SO2_Middle_Troposphere'] = "image/png";
+    fmt_hash['OMI_SO2_Upper_Troposphere_and_Stratosphere'] = "image/png";
+    fmt_hash['VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1'] = "image/jpeg";
+    fmt_hash['VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11'] = "image/jpeg";
+    fmt_hash['VIIRS_SNPP_CorrectedReflectance_TrueColor'] = "image/jpeg";
+
 
     var matrix_hash = new Object();
     matrix_hash['MODIS_Terra_CorrectedReflectance_TrueColor'] = "EPSG4326_250m";
     matrix_hash['AIRS_CO_Total_Column_Day'] = "EPSG4326_2km";
+    matrix_hash['AIRS_CO_Total_Column_Night'] = "EPSG4326_2km";
+    matrix_hash['AIRS_Dust_Score_Ocean_Day'] = "EPSG4326_2km";
+    matrix_hash['AIRS_Dust_Score_Ocean_Night'] = "EPSG4326_2km";
+    matrix_hash['AIRS_Prata_SO2_Index_Day'] = "EPSG4326_2km";
+    matrix_hash['AIRS_Prata_SO2_Index_Night'] = "EPSG4326_2km";
+    matrix_hash['AIRS_Precipitation_Day'] = "EPSG4326_2km";
+    matrix_hash['AIRS_Precipitation_Night'] = "EPSG4326_2km";
+    matrix_hash['MODIS_Aqua_Aerosol'] = "EPSG4326_2km";
+    matrix_hash['MODIS_Aqua_Brightness_Temp_Band31_Day'] = "EPSG4326_1km";
+    matrix_hash['MODIS_Aqua_Brightness_Temp_Band31_Night'] = "EPSG4326_1km";
+    matrix_hash['MODIS_Aqua_Chlorophyll_A'] = "EPSG4326_1km";
+    matrix_hash['MODIS_Aqua_CorrectedReflectance_TrueColor'] = "EPSG4326_250m";
+    matrix_hash['MODIS_Aqua_Land_Surface_Temp_Day'] = "EPSG4326_1km";
+    matrix_hash['MODIS_Aqua_Land_Surface_Temp_Night'] = "EPSG4326_1km";
+    matrix_hash['MODIS_Aqua_Sea_Ice'] = "EPSG4326_1km";
+    matrix_hash['MODIS_Aqua_SurfaceReflectance_Bands121'] = "EPSG4326_250m";
+    matrix_hash['MODIS_Terra_Water_Vapor_5km_Day'] = "EPSG4326_2km";
+    matrix_hash['MODIS_Terra_Water_Vapor_5km_Night'] = "EPSG4326_2km";
+    matrix_hash['MODIS_Water_Mask'] = "EPSG4326_250m";
+    matrix_hash['OMI_SO2_Lower_Troposphere'] = "EPSG4326_2km";
+    matrix_hash['OMI_SO2_Middle_Troposphere'] = "EPSG4326_2km";
+    matrix_hash['OMI_SO2_Upper_Troposphere_and_Stratosphere'] = "EPSG4326_2km";
+    matrix_hash['VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1'] = "EPSG4326_250m";
+    matrix_hash['VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11'] = "EPSG4326_250m";
+    matrix_hash['VIIRS_SNPP_CorrectedReflectance_TrueColor'] = "EPSG4326_250m";
+
+
 
     // Seven day slider based off today, remember what today is
     var today = new Date();
@@ -426,7 +479,7 @@ $(function() {
     var image = new ol.style.Circle({
         radius: 5,
         fill: null,
-        stroke: new ol.style.Stroke({color: 'red', width: 1})
+        stroke: new ol.style.Stroke({color: 'magenta', width: 1})
     });
 
     var styles = {
@@ -435,14 +488,14 @@ $(function() {
         }),
         'LineString': new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: 'green',
-                width: 1
+                color: 'magenta',
+                width: 4
             })
         }),
         'MultiLineString': new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: 'green',
-                width: 1
+                color: 'magenta',
+                width: 4
             })
         }),
         'MultiPoint': new ol.style.Style({
@@ -450,31 +503,25 @@ $(function() {
         }),
         'MultiPolygon': new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: 'yellow',
-                width: 1
+                color: 'magenta',
+                width: 4
             }),
-            fill: new ol.style.Fill({
-                color: 'rgba(255, 255, 0, 0.1)'
-            })
+            fill: null
         }),
         'Polygon': new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: 'blue',
+                color: 'magenta',
                 lineDash: [4],
-                width: 3
+                width: 4
             }),
-            fill: new ol.style.Fill({
-                color: 'rgba(0, 0, 255, 0.1)'
-            })
+            fill: null
         }),
         'GeometryCollection': new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: 'magenta',
-                width: 2
+                width: 4
             }),
-            fill: new ol.style.Fill({
-                color: 'magenta'
-            }),
+            fill: null,
             image: new ol.style.Circle({
                 radius: 10,
                 fill: null,
@@ -485,12 +532,10 @@ $(function() {
         }),
         'Circle': new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: 'red',
-                width: 2
+                color: 'magenta',
+                width: 4
             }),
-            fill: new ol.style.Fill({
-                color: 'rgba(255,0,0,0.2)'
-            })
+            fill: null
         })
     };
 
