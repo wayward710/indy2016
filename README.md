@@ -9,6 +9,7 @@ You can generate a map by selecting a base layer of your choice, using the check
 set preferences, and then searching for EONET events by category and date. If you click on an
 event, the name and date/time of the event should appear in the top right hand corner.
 
-This will probably be open source, though the specific open source license hasn't yet been chosen.
+This is open source, using the Apache License (http://www.apache.org/licenses/LICENSE-2.0)
+to be consistent with the NASA GIBS code, some of which was reused here.
 
 Questions or feedback? Please contact Wendy Edwards ( wayward710@gmail.com).

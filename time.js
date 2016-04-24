@@ -1,27 +1,14 @@
 /**
- * GIBS Web Examples
- *
- * Copyright 2013 - 2014 United States Government as represented by the
- * Administrator of the National Aeronautics and Space Administration.
- * All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The time slider part of the code was based on a NASA GIBS web example
  */
 
 $(function() {
 
+    // This will hold the EONET search results
+
     var geojsonObject = {};
 
+    // Set some default EONET search parameters
     var eonet_cat = "6";
     var eonet_day_range = "180";
 
@@ -31,10 +18,12 @@ $(function() {
     var labels_enabled = false;
     var grid_enabled = false;
 
+    // Set default base layer parameters
     var nasa_layer_name = "VIIRS_SNPP_CorrectedReflectance_TrueColor";
     var nasa_layer_format = "image/jpeg";
     var nasa_layer_matrix_set = "EPSG4326_250m";
 
+    // Hash keeping track of layers and formats
     var fmt_hash = new Object();
     fmt_hash['MODIS_Terra_CorrectedReflectance_TrueColor'] = "image/jpeg";
     fmt_hash['AIRS_CO_Total_Column_Day'] = "image/png";
@@ -64,7 +53,7 @@ $(function() {
     fmt_hash['VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11'] = "image/jpeg";
     fmt_hash['VIIRS_SNPP_CorrectedReflectance_TrueColor'] = "image/jpeg";
 
-
+    // Hash keeping track of layers and projections
     var matrix_hash = new Object();
     matrix_hash['MODIS_Terra_CorrectedReflectance_TrueColor'] = "EPSG4326_250m";
     matrix_hash['AIRS_CO_Total_Column_Day'] = "EPSG4326_2km";
@@ -94,9 +83,7 @@ $(function() {
     matrix_hash['VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11'] = "EPSG4326_250m";
     matrix_hash['VIIRS_SNPP_CorrectedReflectance_TrueColor'] = "EPSG4326_250m";
 
-
-
-    // Seven day slider based off today, remember what today is
+    // Slider based off today, remember what today is
     var today = new Date();
 
     // Selected day to show on the map
@@ -117,6 +104,7 @@ $(function() {
         return day.toISOString().split("T")[0];
     };
 
+    // Create map
     var map = new ol.Map({
         view: new ol.View({
             maxResolution: 0.5625,
@@ -130,6 +118,7 @@ $(function() {
         renderer: ["canvas", "dom"],
     });
 
+    // Create coastline layer
     var coastlineLayer = function() {
         var source = new ol.source.WMTS({
             url: "//map1{a-c}.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi?TIME=" + dayParameter(),
@@ -158,6 +147,7 @@ $(function() {
         return layer;
     };
 
+    // Create label layer
     var labelLayer = function() {
         var source = new ol.source.WMTS({
             url: "//map1{a-c}.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi?TIME=" + dayParameter(),
@@ -186,7 +176,7 @@ $(function() {
         return layer;
     };
 
-
+    // Create grid layer
     var gridLayer=new ol.layer.Vector({
 
         source: new ol.source.Vector({
@@ -209,11 +199,11 @@ $(function() {
         })
     });
 
+    // Create layer based on EONET search resuts
     var eonet_layer = function() {
         var vectorSource = new ol.source.Vector({
             features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
         });
-
 
         var vectorLayer = new ol.layer.Vector({
             source: vectorSource,
@@ -222,6 +212,7 @@ $(function() {
         return vectorLayer;
     }
 
+    // Draw/update map
     var update = function() {
 
         // Using day as the cache key, see if the layer is already
@@ -277,6 +268,7 @@ $(function() {
         $("#day-label").html(dayParameter());
     };
 
+    // Clear existing layers
     var clearLayers = function() {
         // Get a copy of the current layer list and then remove each
         // layer.
@@ -289,7 +281,7 @@ $(function() {
         }
     };
 
-    // TODO refactor to accept layer, matrixSet, and format parameters?
+    // Create layer with base layers.  Could maybe refactor to accept params
     var createLayer = function() {
         var source = new ol.source.WMTS({
             url: "//map1{a-c}.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi?TIME=" + dayParameter(),
@@ -323,7 +315,7 @@ $(function() {
     // Slider values are in "days from present".
     $("#day-slider").slider({
         value: 0,
-        min: -100,
+        min: -180,
         max: 0,
         step: 1,
         slide: function(event, ui) {
@@ -336,6 +328,7 @@ $(function() {
         }
     });
 
+    // Does the user want to see base layer?
     var base_checkbox = $("#basecheck");
 
     base_checkbox.change(function(event) {
@@ -348,7 +341,7 @@ $(function() {
         update();
     });
 
-
+    // Does the user want to see grid?
     var grid_checkbox = $("#gridcheck");
 
     grid_checkbox.change(function(event) {
@@ -361,6 +354,7 @@ $(function() {
         update();
     });
 
+    // Does the user want to see coastline?
     var coast_checkbox = $("#coastcheck");
 
     coast_checkbox.change(function(event) {
@@ -373,6 +367,7 @@ $(function() {
         update();
     });
 
+    // Does the user want to see labels?
     var label_checkbox = $("#labelcheck");
 
     label_checkbox.change(function(event) {
@@ -385,6 +380,7 @@ $(function() {
         update();
     });
 
+    // Select base layer
     var layer_dropdown = $("#baselayer");
     layer_dropdown.change(function(event) {
         nasa_layer_name = this.value;
@@ -395,22 +391,25 @@ $(function() {
         update();
     });
 
+    // Select eonet category
     var eonet_category = $("#eonet_category");
     eonet_category.change(function (event) {
         eonet_cat = this.value;
         console.log("eonet_cat: " + eonet_cat);
     });
 
+    // Number of days back to search EONET
     var eonet_days = $("#eonet_days");
     eonet_days.change(function (event) {
         eonet_day_range = this.value;
         console.log("eonet_day_range: " + eonet_day_range);
     });
 
+    // Actually do EONET search
     var eonet_button = $("#eonet_btn");
     eonet_button.click(function() {
 
-
+        // placeholder array to store geometry from EONET JSON response
         var feature_arr = new Array();
         var eonet_url = "http://eonet.sci.gsfc.nasa.gov/api/v2.1/categories/" + eonet_cat + "?days=" + eonet_day_range ;
         $.getJSON(eonet_url, function(data){
@@ -418,12 +417,11 @@ $(function() {
             $.each( data, function( key, val ) {
                 items.push( "<li id='" + key + "'>" + val + "</li>" );
             });
-            console.log(items);
+
             var events2 = data.events;
             for (var i = 0 ; i < events2.length; i++) {
                 var our_event = events2[i];
                 var our_title = our_event.title;
-                console.log(our_title);
                 var our_geometries = our_event.geometries;
                 for (var j = 0; j < our_geometries.length; j++) {
                     var geom1 = our_geometries[j];
@@ -435,8 +433,8 @@ $(function() {
                     var type = geom1.type;
                     //console.log(geom1.type);
                     our_feature['type'] = 'Feature';
-                    //our_feature['coordinates'] = geom1.coordinates;
 
+                    // store name and date as properties
                     var our_properties = {};
                     our_properties.name = our_title;
                     our_properties.date = date1;
@@ -447,12 +445,9 @@ $(function() {
                     our_geometry.coordinates = geom1.coordinates;
                     our_feature['geometry'] = our_geometry;
 
-                    console.log("feature array length: " + feature_arr.length);
                 }
-                console.log("feature array length2: " + feature_arr.length);
             }
-            console.log("feature array length3: " + feature_arr.length);
-            //geojsonObject['features'] = feature_arr;
+
             geojsonObject = {
                 'type': 'FeatureCollection',
                 'crs': {
@@ -469,13 +464,10 @@ $(function() {
 
         });
 
-
-        //geojsonObject['features'] = feature_arr;
-
-
-
     });
 
+    // Styling information for Geojson from EONET events.  Using
+    // magenta outline and no fill for best visibility
     var image = new ol.style.Circle({
         radius: 5,
         fill: null,
@@ -543,13 +535,13 @@ $(function() {
         return styles[feature.getGeometry().getType()];
     };
 
+    // When the user clicks on a selected feature
     var displayFeatureInfo = function(pixel) {
 
         var feature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
             return feature;
         });
 
-        //var info = document.getElementById('info');
         if (feature) {
             document.getElementById('summaryLabel').innerHTML = '<p style="font-size:18px"><b>' + feature.get('name') + ' ' + feature.get('date') + '</b></p>';
 
