@@ -16,7 +16,6 @@
 
     <!-- Custom styles for this template -->
     <link href="grid.css" rel="stylesheet">
-    <link href="custom.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css" />
@@ -39,7 +38,11 @@
             height: 400px;
             width: 100%;
         }
+        .overlay_group {
+            opacity: 0.75;
+        }
     </style>
+
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -54,13 +57,9 @@
 <body>
 
 <div class="container">
-    <div id="map" style=".map"></div>
-    <div id="day-panel">
-        <div id="day-label"></div>
-        <div id="day-slider"></div>
+    <div id="map" style=".map">
     </div>
-
-    <div class="panel-group" id="accordion" style="position:absolute;top:2%;left:10%;padding:5px 3px;">
+    <div class="panel-group" id="accordion" style="position:absolute;top:2%;left:20%;padding:5px 3px;opacity:0.8">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
@@ -75,7 +74,7 @@
                         <div class="form-group">
                             <label for="baselayer">Base layer source</label>
                             <select class="form-control" id="baselayer">
-                                <option value="MODIS_Terra_CorrectedReflectance_TrueColor">Satellite Image</option>
+                                <option value="VIIRS_SNPP_CorrectedReflectance_TrueColor">Corr Refl True Color</option>
                                 <option value="AIRS_CO_Total_Column_Day">Carbon Monoxide (Day)</option>
                                 <option value="AIRS_CO_Total_Column_Night">Carbon Monoxide (Night)</option>
                                 <option value="AIRS_Dust_Score_Ocean_Day">Ocean Dust (Day)</option>
@@ -101,7 +100,7 @@
                                 <option value="OMI_SO2_Upper_Troposphere_and_Stratosphere">SO2 Upper and Strat</option>
                                 <option value="VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1">Corr Refl Bands M11-I2-I1</option>
                                 <option value="VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11">Corr Refl Bands M3-I3-M11</option>
-                                <option value="VIIRS_SNPP_CorrectedReflectance_TrueColor">Corr Refl True Color</option>
+
                             </select>
                         </div>
                         <div class="checkbox">
@@ -159,6 +158,12 @@
             </div>
         </div>
     </div>
+    <div id="day-panel">
+        <div id="day-label"></div>
+        <div id="day-slider"></div>
+    </div>
+
+
 
     <div id="summaryLabel" style="color:silver;position:absolute;top:2%;right:10%;padding:5px 3px;">
         <p></p>

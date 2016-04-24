@@ -31,7 +31,7 @@ $(function() {
     var labels_enabled = false;
     var grid_enabled = false;
 
-    var nasa_layer_name = "MODIS_Terra_CorrectedReflectance_TrueColor";
+    var nasa_layer_name = "VIIRS_SNPP_CorrectedReflectance_TrueColor";
     var nasa_layer_format = "image/jpeg";
     var nasa_layer_matrix_set = "EPSG4326_250m";
 
