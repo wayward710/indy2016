@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="Wendy Edwards">
 
 
-    <title>Test Angular OpenLayers</title>
+    <title>Indianapolis Space App Challenge 2016</title>
 
     <!-- Bootstrap core CSS -->
 
@@ -80,6 +80,9 @@
                             </select>
                         </div>
                         <div class="checkbox">
+                            <label><input type="checkbox" id="basecheck" checked="true"> Show base layer</label>
+                        </div>
+                        <div class="checkbox">
                             <label><input type="checkbox" id="coastcheck"> Show coastlines</label>
                         </div>
                         <div class="checkbox">
@@ -102,13 +105,38 @@
             <div id="collapse2" class="panel-collapse collapse">
                 <div class="panel-body">
                     <form role="form">
-
-                        <button type="button" class="btn" id="eonet_btn">Eonet Search</button>
+                        <div class="form-group">
+                            <label for="eonet_category">Category:</label>
+                            <select class="form-control" id="eonet_category">
+                                <option value="6">Drought</option>
+                                <option value="7">Dust and Haze</option>
+                                <option value="16">Earthquakes</option>
+                                <option value="9">Floods</option>
+                                <option value="14">Landslides</option>
+                                <option value="19">Manmade</option>
+                                <option value="15">Sea and Lake Ice</option>
+                                <option value="10">Severe Storms</option>
+                                <option value="17">Snow</option>
+                                <option value="18">Temperature Extremes</option>
+                                <option value="12">Volcanoes</option>
+                                <option value="13">Water Color</option>
+                                <option value="8">Wildfires</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="eonet_days">Number of Days: </label>
+                            <input type="text" class="form-control" id="eonet_days" value="180">
+                        </div>
+                        <button type="button" class="btn" id="eonet_btn">Search EONET</button>
 
                     </form>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="summaryLabel" style="color:silver;position:absolute;top:2%;right:10%;padding:5px 3px;">
+        <p></p>
     </div>
 
 </div><!-- /container -->
