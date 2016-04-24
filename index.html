@@ -57,8 +57,10 @@
 <body>
 
 <div class="container">
-    <div id="map" style=".map">
-    </div>
+    <!-- The actual map -->
+    <div id="map" style=".map"></div>
+
+    <!-- Select map preferences and do EONET search -->
     <div class="panel-group" id="accordion" style="position:absolute;top:2%;left:20%;padding:5px 3px;opacity:0.8">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -67,9 +69,10 @@
                         Map Preferences</a>
                 </h4>
             </div>
+
+            <!-- Map Preferences -->
             <div id="collapse1" class="panel-collapse collapse in">
                 <div class="panel-body">
-
                     <form role="form">
                         <div class="form-group">
                             <label for="baselayer">Base layer source</label>
@@ -126,6 +129,8 @@
                         EONET Event Search</a>
                 </h4>
             </div>
+
+            <!-- EONET Search -->
             <div id="collapse2" class="panel-collapse collapse">
                 <div class="panel-body">
                     <form role="form">
@@ -158,20 +163,30 @@
             </div>
         </div>
     </div>
+    <!-- Slider to select date-->
     <div id="day-panel">
         <div id="day-label"></div>
         <div id="day-slider"></div>
     </div>
 
-
-
+    <!-- Label displaying information about selected events -->
     <div id="summaryLabel" style="color:silver;position:absolute;top:2%;right:10%;padding:5px 3px;">
         <p></p>
     </div>
 
+    <!-- Description/documentation -->
+    <div>
+        <h3>NASA EONET Event Searching and Mapping</h3>
+        <p>Welcome to the EONET event searching and mapping tool.  This application was developed
+        for the 2016 NASA Space Apps Challenge in Indianapolis, IN.  You can generate a map by selecting
+        a base layer of your choice, using the checkboxes to set preferences, and then searching for
+        EONET events by category and date.  If you click on an event, the name and date/time of the
+        event should appear in the top right hand corner.</p>
+        <p>Questions or feedback?  Please contact Wendy Edwards (<a href="mailto:wayward710@gmail.com">
+            wayward710@gmail.com</a>).</p>
+
+    </div>
 </div><!-- /container -->
-
-
 
 </body>
 </html>
