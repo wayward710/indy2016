@@ -8,8 +8,8 @@ $(function() {
 
     var geojsonObject = {};
 
-    // Set some default EONET search parameters
-    var eonet_cat = "6";
+    // By default, search all
+    var eonet_cat = "All";
     var eonet_day_range = "180";
 
     // Keep track of whether user wants to see these
@@ -215,6 +215,7 @@ $(function() {
     // Draw/update map
     var update = function() {
 
+
         // Using day as the cache key, see if the layer is already
         // in the cache.
 
@@ -243,23 +244,35 @@ $(function() {
             cache[key] = layer;
         }
 
-        // There is only one layer in this example, but remove them all
-        // anyway
+        // Set all the layer's visibility to false to clear view
+        var layers_to_refresh = map.getLayers().getArray();
+        for ( var i = 0; i < layers_to_refresh.length; i++ ) {
+            // Need to check to see whether layer actually exists
+            if (layers_to_refresh[i]) {
+                layers_to_refresh[i].setVisible(false);
+            }
+        }
+
+        // Remove all layers
         clearLayers();
 
         // Add the new layer for the selected time
         if (base_layer_enabled) {
             map.addLayer(layer);
+            layer.setVisible(true);
         }
 
         if (coastline_enabled) {
             map.addLayer(coast_layer);
+            coast_layer.setVisible(true);
         }
         if (labels_enabled) {
             map.addLayer(lbl_layer);
+            lbl_layer.setVisible(true);
         }
         if (grid_enabled) {
             map.addLayer(gridLayer);
+            gridLayer.setVisible(true);
         }
 
         map.addLayer(eonet_layer());
@@ -275,8 +288,11 @@ $(function() {
         var activeLayers = map.getLayers().getArray();
         for ( var i = 0; i < activeLayers.length; i++ ) {
             // Need to check to see whether layer actually exists
-            if (activeLayers[i]) {
+            try {
                 map.removeLayer(activeLayers[i]);
+            }
+            catch(err) {
+                console.log("Clearing layers is being flaky again");
             }
         }
     };
@@ -388,6 +404,7 @@ $(function() {
         nasa_layer_matrix_set = matrix_hash[nasa_layer_name];
         // Better blow away cache
         cache = {};
+
         update();
     });
 
@@ -411,7 +428,16 @@ $(function() {
 
         // placeholder array to store geometry from EONET JSON response
         var feature_arr = new Array();
-        var eonet_url = "http://eonet.sci.gsfc.nasa.gov/api/v2.1/categories/" + eonet_cat + "?days=" + eonet_day_range ;
+        var eonet_url = "";
+        // Let's support an 'All' category so it's easy to get results
+        if (eonet_cat == 'All') {
+            console.log('searching all');
+            eonet_url = "http://eonet.sci.gsfc.nasa.gov/api/v2.1/events?status=open";
+        }
+        // Search by category
+        else {
+            eonet_url = "http://eonet.sci.gsfc.nasa.gov/api/v2.1/categories/" + eonet_cat + "?days=" + eonet_day_range;
+        }
         $.getJSON(eonet_url, function(data){
             var items = [];
             $.each( data, function( key, val ) {
