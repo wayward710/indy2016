@@ -569,7 +569,7 @@ $(function() {
         });
 
         if (feature) {
-            document.getElementById('summaryLabel').innerHTML = '<p style="font-size:18px"><b>' + feature.get('name') + ' ' + feature.get('date') + '</b></p>';
+            document.getElementById('summaryLabel').innerHTML = '<p style="font-size:18px"><b>' + feature.get('name') + '</p><p>' + feature.get('date') + '</b></p>';
 
         } else {
             document.getElementById('summaryLabel').innerHTML = '';
