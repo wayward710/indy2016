@@ -87,7 +87,7 @@ $(function() {
     var today = new Date();
 
     // Selected day to show on the map
-    var day = new Date(today.getTime());
+    var day = new Date(today.getTime() - 24*60*60*1000);
 
     // When the day is changed, cache previous layers. This allows already
     // loaded tiles to be used when revisiting a day. Since this is a
@@ -330,8 +330,8 @@ $(function() {
 
     // Slider values are in "days from present".
     $("#day-slider").slider({
-        value: 0,
-        min: -180,
+        value: -2,
+        min: -200,
         max: 0,
         step: 1,
         slide: function(event, ui) {
