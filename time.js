@@ -492,6 +492,18 @@ $(function() {
 
     });
 
+    // Clear EONET results
+    var eonet_reset = $("#eonet_reset");
+    eonet_reset.click(function() {
+
+        // Clear search results
+        geojsonObject = {};
+        // Redraw
+        update();
+        // Make sure label is cleared
+        document.getElementById('summaryLabel').innerHTML = '';
+    });
+
     // Styling information for Geojson from EONET events.  Using
     // magenta outline and no fill for best visibility
     var image = new ol.style.Circle({
