@@ -52,6 +52,8 @@ $(function() {
     fmt_hash['VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1'] = "image/jpeg";
     fmt_hash['VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11'] = "image/jpeg";
     fmt_hash['VIIRS_SNPP_CorrectedReflectance_TrueColor'] = "image/jpeg";
+    fmt_hash['AMSR2_Wind_Speed_Day'] = "image/png";
+    fmt_hash['AMSR2_Wind_Speed_Night'] = "image/png";
 
     // Hash keeping track of layers and projections
     var matrix_hash = new Object();
@@ -81,7 +83,24 @@ $(function() {
     matrix_hash['OMI_SO2_Upper_Troposphere_and_Stratosphere'] = "EPSG4326_2km";
     matrix_hash['VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1'] = "EPSG4326_250m";
     matrix_hash['VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11'] = "EPSG4326_250m";
-    matrix_hash['VIIRS_SNPP_CorrectedReflectance_TrueColor'] = "EPSG4326_250m";
+    matrix_hash['AMSR2_Wind_Speed_Day'] = "EPSG4326_2km";
+    matrix_hash['AMSR2_Wind_Speed_Night'] = "EPSG4326_2km";
+    
+
+    var resolution_hash = new Object();
+    resolution_hash['EPSG4326_250m'] = [
+        0.5625,
+        0.28125,
+        0.140625,
+        0.0703125,
+        0.03515625,
+        0.017578125,
+        0.0087890625,
+        0.00439453125,
+        0.002197265625
+    ];
+    resolution_hash['EPSG4326_2km'] = [0.5625, 0.28125, 0.140625, 0.0703125, 0.03515625, 0.017578125];
+    resolution_hash['EPSG4326_1km'] = [0.5625, 0.28125, 0.140625, 0.0703125, 0.03515625, 0.017578125, 0.0087890625];
 
     // Slider based off today, remember what today is
     var today = new Date();
@@ -299,6 +318,7 @@ $(function() {
 
     // Create layer with base layers.  Could maybe refactor to accept params
     var createLayer = function() {
+        var res_value = resolution_hash[nasa_layer_matrix_set];
         var source = new ol.source.WMTS({
             url: "//map1{a-c}.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi?TIME=" + dayParameter(),
             layer: nasa_layer_name,
@@ -306,17 +326,7 @@ $(function() {
             matrixSet: nasa_layer_matrix_set,
             tileGrid: new ol.tilegrid.WMTS({
                 origin: [-180, 90],
-                resolutions: [
-                    0.5625,
-                    0.28125,
-                    0.140625,
-                    0.0703125,
-                    0.03515625,
-                    0.017578125,
-                    0.0087890625,
-                    0.00439453125,
-                    0.002197265625
-                ],
+                resolutions: res_value,
                 matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                 tileSize: 512
             })
