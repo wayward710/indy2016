@@ -25,7 +25,7 @@ $(function() {
 
     // Hash keeping track of layers and formats
     var fmt_hash = new Object();
-    fmt_hash['MODIS_Terra_CorrectedReflectance_TrueColor'] = "image/jpeg";
+    fmt_hash['VIIRS_SNPP_CorrectedReflectance_TrueColor'] = "image/jpeg";
     fmt_hash['AIRS_CO_Total_Column_Day'] = "image/png";
     fmt_hash['AIRS_CO_Total_Column_Night'] = "image/png";
     fmt_hash['AIRS_Dust_Score_Ocean_Day'] = "image/png";
@@ -57,7 +57,7 @@ $(function() {
 
     // Hash keeping track of layers and projections
     var matrix_hash = new Object();
-    matrix_hash['MODIS_Terra_CorrectedReflectance_TrueColor'] = "EPSG4326_250m";
+    matrix_hash['VIIRS_SNPP_CorrectedReflectance_TrueColor'] = "EPSG4326_250m";
     matrix_hash['AIRS_CO_Total_Column_Day'] = "EPSG4326_2km";
     matrix_hash['AIRS_CO_Total_Column_Night'] = "EPSG4326_2km";
     matrix_hash['AIRS_Dust_Score_Ocean_Day'] = "EPSG4326_2km";
@@ -85,7 +85,7 @@ $(function() {
     matrix_hash['VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11'] = "EPSG4326_250m";
     matrix_hash['AMSR2_Wind_Speed_Day'] = "EPSG4326_2km";
     matrix_hash['AMSR2_Wind_Speed_Night'] = "EPSG4326_2km";
-    
+
 
     var resolution_hash = new Object();
     resolution_hash['EPSG4326_250m'] = [
