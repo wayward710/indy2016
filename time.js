@@ -41,6 +41,8 @@ $(function() {
     fmt_hash['MODIS_Aqua_CorrectedReflectance_TrueColor'] = "image/jpeg";
     fmt_hash['MODIS_Aqua_Land_Surface_Temp_Day'] = "image/png";
     fmt_hash['MODIS_Aqua_Land_Surface_Temp_Night'] = "image/png";
+    fmt_hash['MODIS_Terra_Land_Surface_Temp_Day'] = "image/png";
+    fmt_hash['MODIS_Terra_Land_Surface_Temp_Night'] = "image/png";
     fmt_hash['MODIS_Aqua_Sea_Ice'] = "image/png";
     fmt_hash['MODIS_Aqua_SurfaceReflectance_Bands121'] = "image/jpeg";
     fmt_hash['MODIS_Terra_Water_Vapor_5km_Day'] = "image/png";
@@ -54,6 +56,8 @@ $(function() {
     fmt_hash['VIIRS_SNPP_CorrectedReflectance_TrueColor'] = "image/jpeg";
     fmt_hash['AMSR2_Wind_Speed_Day'] = "image/png";
     fmt_hash['AMSR2_Wind_Speed_Night'] = "image/png";
+    fmt_hash['MLS_N2O_46hPa_Day'] = "image/png";
+    fmt_hash['MLS_N2O_46hPa_Night'] = "image/png";
 
     // Hash keeping track of layers and projections
     var matrix_hash = new Object();
@@ -73,6 +77,8 @@ $(function() {
     matrix_hash['MODIS_Aqua_CorrectedReflectance_TrueColor'] = "EPSG4326_250m";
     matrix_hash['MODIS_Aqua_Land_Surface_Temp_Day'] = "EPSG4326_1km";
     matrix_hash['MODIS_Aqua_Land_Surface_Temp_Night'] = "EPSG4326_1km";
+    matrix_hash['MODIS_Terra_Land_Surface_Temp_Day'] = "EPSG4326_1km";
+    matrix_hash['MODIS_Terra_Land_Surface_Temp_Night'] = "EPSG4326_1km";
     matrix_hash['MODIS_Aqua_Sea_Ice'] = "EPSG4326_1km";
     matrix_hash['MODIS_Aqua_SurfaceReflectance_Bands121'] = "EPSG4326_250m";
     matrix_hash['MODIS_Terra_Water_Vapor_5km_Day'] = "EPSG4326_2km";
@@ -85,6 +91,8 @@ $(function() {
     matrix_hash['VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11'] = "EPSG4326_250m";
     matrix_hash['AMSR2_Wind_Speed_Day'] = "EPSG4326_2km";
     matrix_hash['AMSR2_Wind_Speed_Night'] = "EPSG4326_2km";
+    matrix_hash['MLS_N2O_46hPa_Day'] = "EPSG4326_2km";
+    matrix_hash['MLS_N2O_46hPa_Night'] = "EPSG4326_2km";
 
 
     var resolution_hash = new Object();
@@ -101,6 +109,9 @@ $(function() {
     ];
     resolution_hash['EPSG4326_2km'] = [0.5625, 0.28125, 0.140625, 0.0703125, 0.03515625, 0.017578125];
     resolution_hash['EPSG4326_1km'] = [0.5625, 0.28125, 0.140625, 0.0703125, 0.03515625, 0.017578125, 0.0087890625];
+    resolution_hash['EPSG4326_500m'] = [
+        0.5625, 0.28125, 0.140625, 0.0703125, 0.03515625, 0.017578125, 0.0087890625, 0.00439453125
+    ];
 
     // Slider based off today, remember what today is
     var today = new Date();
